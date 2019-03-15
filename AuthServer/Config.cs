@@ -1,67 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
 using GrantTypes = IdentityServer4.Models.GrantTypes;
 
 namespace AuthServer
 {
     public class Config
     {
-        public static List<TestUser> GetUsers()
-        {
-            return new List<TestUser>
-            {
-                new TestUser
-                {
-                    SubjectId = "0001",
-                    Username = "sonali",
-                    Password = "singh",
-
-                    Claims = new[]
-                    {
-                        new Claim("Employee", "Sonali singh"),
-                        new Claim("Email", "http://hamidmosalla.com"),
-                        new Claim("given_name", "sonali"),
-                        new Claim("family_name", "Underwood"),
-                        new Claim("address", "Main Road 1"),
-                        new Claim("subscriptionlevel", "Paying DbUser"),
-                        new Claim("Country", "India"),
-                        new Claim("Employee Number", "75024071"),
-                        new Claim("role","Paying DbUser")
-                    }
-
-                },
-                new TestUser
-                {
-                    SubjectId = "0002",
-                    Username = "sanchit",
-                    Password = "kumar",
-
-                    Claims = new[]
-                    {
-                        new Claim("given_name", "sanchit"),
-                        new Claim("family_name", "Underwood"),
-                        new Claim("address", "Main Road 1"),
-                        new Claim("subscriptionlevel", "Paying DbUser"),
-                        new Claim("country", "India"),
-                        new Claim("Employee Number", "75024071"),
-                        new Claim("role","Free DbUser")
-                    }
-                }
-            };
-        }
-
-
-    
-
         public static IEnumerable<ApiResource>GetApiResources()
         {
             return new List<ApiResource>
             {
-           
                 new ApiResource("api", "My API",
-               
                     new List<string>() {"role" , "given_name", "family_name","address", "subscriptionlevel" , "Country", "Employee Number" } )
                 {
                     ApiSecrets = { new Secret("apisecret".Sha256())}
@@ -70,11 +19,9 @@ namespace AuthServer
           
 
             };
-
         }
 
-
-        public static IEnumerable<Client>GetClients()
+        public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
             {
@@ -93,8 +40,8 @@ namespace AuthServer
                     AllowedScopes =
                     {
                         "api"
-                        
                     },
+
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
