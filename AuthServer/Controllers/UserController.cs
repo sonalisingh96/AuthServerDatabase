@@ -10,7 +10,7 @@ using User = AuthServer.Models.User;
 
 namespace AuthServer.Controllers
 {
-    [Route("api/DbUser")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
