@@ -1,26 +1,27 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.Database;
 using IdentityServer4.Extensions;
+using Microsoft.EntityFrameworkCore;
 
-namespace AuthServer.Models
+namespace AuthServer.Service
 {
     public class UserRepository
     {
-        private readonly ApplicationDbcontext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UserRepository(ApplicationDbcontext context)
+        public UserRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public User GetUserByUsernameOrNull(string username)
+        public DbUser GetUserOrNull(string username)
         { 
             var user = _context.Users.FirstOrDefault(u => u.Username == username);
             return user;
         }
+
         public string RegisterUser(string userName,string password,string userType)
         {
             var data = _context.Users.FirstOrDefault(p => p.Username ==userName);
@@ -28,7 +29,7 @@ namespace AuthServer.Models
             {
                 throw new InvalidOperationException();
             }
-            data = new User
+            data = new DbUser
             {
                 Username =userName,
                 Password = password,

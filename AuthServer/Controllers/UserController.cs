@@ -1,21 +1,20 @@
-﻿using AuthServer.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthServer.RestModels;
+using AuthServer.Service;
 using IdentityServer4.Extensions;
-using User = AuthServer.RestModels.User;
+using User = AuthServer.Models.User;
 
 namespace AuthServer.Controllers
 {
-    [Route("api/User")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
-         private readonly UserRepository _userRepository;
+        private readonly UserRepository _userRepository;
         public UserController(UserRepository userRepository)
         {
             _userRepository = userRepository;
