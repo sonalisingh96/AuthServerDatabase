@@ -17,7 +17,7 @@ namespace API
             Console.Title = "WebApi";
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://localhost:5001")
+                .UseUrls("http://localhost:5001") //TBD: Should come from config
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
