@@ -80,6 +80,7 @@ namespace AuthServer.Service
                 throw new InvalidOperationException();
             }
 
+           
             data.Password = password;
             _context.Users.Update(data);
              result = await _context.SaveChangesAsync();

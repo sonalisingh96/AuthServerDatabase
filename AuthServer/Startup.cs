@@ -1,13 +1,13 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using AuthServer.Certificate;
 using AuthServer.Database;
 using AuthServer.Service;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace AuthServer
@@ -36,9 +36,8 @@ namespace AuthServer
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
-            services.AddIdentityServer()
-                //.AddSigningCredential(new X509Certificate2("C:\\workspace\\IdentityServer4Auth.pfx", "ABC$1234"))
-                .AddDeveloperSigningCredential()
+           services.AddIdentityServer()
+                .AddSigninCredentialFromConfig(Configuration.GetSection("SigninKeyCredentials"))
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>();

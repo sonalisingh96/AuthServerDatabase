@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AuthServer.Service;
 
-namespace AuthServer
+namespace AuthServer.Service
 {
     public class ProfileService : IProfileService
     {

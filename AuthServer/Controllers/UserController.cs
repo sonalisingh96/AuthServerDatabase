@@ -65,14 +65,14 @@ namespace AuthServer.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromHeader]string username, [FromBody]User user)
+        public async Task<IActionResult> UpdateUser( [FromBody]User user)
         {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
                 }
             
-                if (username == null || user.Password.IsNullOrEmpty())
+                if (user.Username.IsNullOrEmpty()|| user.Password.IsNullOrEmpty())
                 {
                   
                     return BadRequest();
@@ -80,7 +80,7 @@ namespace AuthServer.Controllers
                 
                 try
                 {
-                    var result = await _userRepository.UpdateUser(username, user.Password,user.UserType);
+                    var result = await _userRepository.UpdateUser(user.Username, user.Password,user.UserType);
                     return Ok();
                 }
                 catch (InvalidOperationException)

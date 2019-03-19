@@ -28,8 +28,8 @@ namespace AuthServer
                 new Client
                 {
                     AlwaysIncludeUserClaimsInIdToken=true,
-                    ClientName = "Api client Name", //Image Gallery
-                    ClientId = "resourceOwner", //imagegalleryclient
+                    ClientName = "Api client Name", 
+                    ClientId = "resourceOwner", 
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 
                     AccessTokenType = AccessTokenType.Jwt,
