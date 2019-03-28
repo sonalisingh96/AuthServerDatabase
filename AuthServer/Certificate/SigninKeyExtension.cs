@@ -12,10 +12,10 @@ namespace AuthServer.Certificate
 {
     public class SigninKeyExtension
     {
-        
+
         private const string KeyFilePath = "C:\\workspace\\IdentityServer4Auth.pfx";
         private const string KeyFilePassword = "ABC$1234";
-        
+
         private static void AddCertificateFromFile(IIdentityServerBuilder builder,
             IConfigurationSection options, ILogger logger)
         {

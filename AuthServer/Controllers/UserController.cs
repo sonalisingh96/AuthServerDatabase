@@ -20,10 +20,11 @@ namespace AuthServer.Controllers
             _userRepository = userRepository;
         }
 
+
         [HttpPost]
         public IActionResult RegisterUser([FromBody]User user)
         {
-           
+
             try
             {
                 var userId = _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
@@ -52,12 +53,12 @@ namespace AuthServer.Controllers
                 var result = await _userRepository.DeleteUser(username);
                 return Ok();
             }
-            catch (InvalidOperationException )
+            catch (InvalidOperationException)
             {
                 Console.WriteLine("Username does not exists");
                 return NotFound();
             }
-            catch (Exception )
+            catch (Exception)
             {
                 Console.WriteLine("Provide some username");
                 return BadRequest();
@@ -67,29 +68,29 @@ namespace AuthServer.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUser([FromHeader]string username, [FromBody]User user)
         {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest();
-                }
-            
-                if (username == null || user.Password.IsNullOrEmpty())
-                {
-                  
-                    return BadRequest();
-                }
-                
-                try
-                {
-                    var result = await _userRepository.UpdateUser(username, user.Password,user.UserType);
-                    return Ok();
-                }
-                catch (InvalidOperationException)
-                {
-                    Console.WriteLine("Username does not exist");
-                    return NotFound();
-                }
-          
-        }  
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (username == null || user.Password.IsNullOrEmpty())
+            {
+
+                return BadRequest();
+            }
+
+            try
+            {
+                var result = await _userRepository.UpdateUser(username, user.Password, user.UserType);
+                return Ok();
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("Username does not exist");
+                return NotFound();
+            }
+
+        }
     }
 }
 

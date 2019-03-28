@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AuthServer.Database;
 using AuthServer.Service;
+using IdentityServer4;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace AuthServer
@@ -37,13 +39,36 @@ namespace AuthServer
             });
 
             services.AddIdentityServer()
-                //.AddSigningCredential(new X509Certificate2("C:\\workspace\\IdentityServer4Auth.pfx", "ABC$1234"))
-                .AddDeveloperSigningCredential()
+                .AddSigningCredential(new X509Certificate2("C:\\workspace\\IdentityServer4Auth.pfx", "ABC$1234"))
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>();
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = "<insert here>";
+                    options.ClientSecret = "<insert here>";
+                })
+                .AddOpenIdConnect("oidc", "OpenID Connect", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+                    options.SaveTokens = true;
+
+                    options.Authority = "https://demo.identityserver.io/";
+                    options.ClientId = "implicit";
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
+                });
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)
         {
             app.UseSwagger();
@@ -51,7 +76,7 @@ namespace AuthServer
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-            app.UseMvc();
+
 
 
             if (env.IsDevelopment())
@@ -60,6 +85,7 @@ namespace AuthServer
             }
 
             app.UseIdentityServer();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
