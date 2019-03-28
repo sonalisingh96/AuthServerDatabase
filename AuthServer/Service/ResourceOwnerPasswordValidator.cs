@@ -2,7 +2,7 @@
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 
-namespace AuthServer.Service
+namespace IdentityServer.Service
 {
     public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {

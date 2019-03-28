@@ -1,23 +1,22 @@
 ﻿using System;
-using System.IO;
+using IdentityServer;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace AuthServer
+
+namespace IdentityServer
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             Console.Title = "AuthServer";
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseUrls("http://localhost:5000")
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+
+            BuildWebHost(args).Run();
+        }
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
-
-            host.Run();
-        }
     }
 }

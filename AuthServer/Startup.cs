@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using AuthServer.Certificate;
-using AuthServer.Database;
-using AuthServer.Service;
+using IdentityServer.Certificate;
+using IdentityServer.Database;
+using IdentityServer.Service;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using IdentityServer4;
+using Microsoft.IdentityModel.Tokens;
 
-namespace AuthServer
+namespace IdentityServer
 {
     public class Startup
     {
@@ -39,8 +41,32 @@ namespace AuthServer
            services.AddIdentityServer()
                 .AddSigninCredentialFromConfig(Configuration.GetSection("SigninKeyCredentials"))
                 .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryIdentityResources((Config.GetIdentityResources()))
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>();
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = "<insert here>";
+                    options.ClientSecret = "<insert here>";
+                })
+                .AddOpenIdConnect("oidc", "OpenID Connect", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+                    options.SaveTokens = true;
+
+                    options.Authority = "https://demo.identityserver.io/";
+                    options.ClientId = "implicit";
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
+                });
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)

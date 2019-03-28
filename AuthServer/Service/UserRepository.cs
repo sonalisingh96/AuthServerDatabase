@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthServer.Database;
+using IdentityServer.Database;
 using IdentityServer4.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthServer.Service
+namespace IdentityServer.Service
 {
     public class UserRepository
     {

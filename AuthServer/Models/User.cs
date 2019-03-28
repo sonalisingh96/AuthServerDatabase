@@ -1,4 +1,4 @@
-﻿namespace AuthServer.Models
+﻿namespace IdentityServer.Models
 {
     public class User
     {

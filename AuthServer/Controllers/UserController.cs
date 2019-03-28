@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthServer.Service;
+using IdentityServer.Service;
 using IdentityServer4.Extensions;
-using User = AuthServer.Models.User;
+using User = IdentityServer.Models.User;
 
-namespace AuthServer.Controllers
+namespace IdentityServer.Controllers
 {
     [Route("api/user")]
     [ApiController]

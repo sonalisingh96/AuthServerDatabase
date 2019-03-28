@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace AuthServer.Database
+namespace IdentityServer.Database
 {
 
     

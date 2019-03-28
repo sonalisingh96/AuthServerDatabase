@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AuthServer.Certificate
+namespace IdentityServer.Certificate
 {
     public static class SigninKeyExtension
     {
