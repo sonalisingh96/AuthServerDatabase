@@ -5,7 +5,7 @@ using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace MvcClient
+namespace Mvc
 {
     public class Program
     {

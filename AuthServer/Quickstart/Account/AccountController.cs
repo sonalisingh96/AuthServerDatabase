@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using AuthServer.Database;
 using AuthServer.Service;
@@ -77,8 +78,9 @@ namespace AuthServer
         /// Handle postback from username/password login
         /// </summary>
         [HttpPost]
+        
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model, string button)
+        public async Task<IActionResult> Login(LoginInputModel model,string button)
         {
             // check if we are in the context of an authorization request
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);

@@ -84,6 +84,8 @@ namespace AuthServer
                     AlwaysSendClientClaims=true
 
                 }
+               
+                
 
             };
         }
