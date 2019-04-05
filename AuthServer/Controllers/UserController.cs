@@ -27,7 +27,6 @@ namespace AuthServer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute]int id)
         {
-           if()
             await _userRepository.DeleteUser(id);
             return Ok();
         }
