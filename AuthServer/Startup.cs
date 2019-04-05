@@ -89,6 +89,7 @@ namespace AuthServer
 
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
+            app.UseStaticFiles();
         }
     }
 }

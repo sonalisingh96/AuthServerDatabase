@@ -12,6 +12,8 @@ namespace AuthServer.Database
         public string Username { get; set; }
 
         public string Password { get; set; }
+
+        //TBD: Check the value allowed values(app-user, web-user)
         public string UserType { get; set; }
     }
 }
