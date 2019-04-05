@@ -41,6 +41,7 @@ namespace AuthServer
             });
 
             services.AddIdentityServer()
+                //TBD: how to create a file
                 .AddSigningCredential(new X509Certificate2("IdentityServer4Auth.pfx", "ABC$1234"))
                 //.AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
