@@ -23,7 +23,7 @@ namespace AuthServer.Service
             return user;
         }
 
-        public string RegisterUser(string userName,string password,string userType)
+        public async Task<string> RegisterUser(string userName,string password,string userType)
         {
             var data = _context.Users.FirstOrDefault(p => p.Username ==userName);
             if (data != null)
@@ -37,35 +37,16 @@ namespace AuthServer.Service
                 UserType = userType
             };
             _context.Users.Add(data);
-            _context.SaveChangesAsync();
-            if (userName.IsNullOrEmpty() || password.IsNullOrEmpty() || userType.IsNullOrEmpty())
-            {
-                throw new Exception();
-            }
+            await _context.SaveChangesAsync();
             return data.Id.ToString();
         }
 
-        public async Task<int> DeleteUser(string userName)
+        public async Task DeleteUser(string userName)
         {
-            var result = 0;
-            if (userName.IsNullOrEmpty())
-            {
-                throw new Exception();
-            }
-            if (_context == null)
-            {
-                return result;
-            }
-
             var data = await _context.Users.FirstOrDefaultAsync(x => x.Username == userName);
-            if (data == null)
-            {
-                throw new InvalidOperationException();
-            }
-                      
             _context.Users.Remove(data);
-             result = await _context.SaveChangesAsync();
-             return result;
+             var result = await _context.SaveChangesAsync();
+             if(result == 0) throw new AppException(404, "the user is not found");
         }
 
          public async Task<int> UpdateUser(string userName, string password,string userType)

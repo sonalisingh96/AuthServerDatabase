@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.Database;
 using AuthServer.Service;
 using IdentityServer4.Extensions;
 using User = AuthServer.Models.User;
@@ -22,35 +23,27 @@ namespace AuthServer.Controllers
 
 
         [HttpPost]
-        public IActionResult RegisterUser([FromBody]User user)
+        public async Task<IActionResult> RegisterUser([FromBody]User user)
         {
-        
-            var userId = _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            //TBD: do the model validation here
+            var userId = await _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
             return Ok(userId);
-        
         }
 
         [HttpDelete]
+        //TBD : userName should not be from header. this should be from path or query string //check the standard
         public async Task<IActionResult> DeleteUser([FromHeader]string username)
-        {
-            try
-            {
-                var result = await _userRepository.DeleteUser(username);
-                return Ok();
-            }
-            catch (InvalidOperationException)
-            {
-                Console.WriteLine("Username does not exists");
-                return NotFound();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Provide some username");
-                return BadRequest();
-            }
+        {  
+            await _userRepository.DeleteUser(username);
+            return Ok();
         }
 
         [HttpPut]
+        //username from path
         public async Task<IActionResult> UpdateUser([FromHeader]string username, [FromBody]User user)
         {
             if (!ModelState.IsValid)

@@ -41,7 +41,7 @@ namespace AuthServer
             });
 
             services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2("C:\\workspace\\IdentityServer4Auth.pfx", "ABC$1234"))
+                .AddSigningCredential(new X509Certificate2("IdentityServer4Auth.pfx", "ABC$1234"))
                 //.AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
