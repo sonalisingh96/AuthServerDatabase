@@ -49,23 +49,15 @@ namespace AuthServer.Service
              if(result == 0) throw new AppException(404, "the user is not found");
         }
 
-         public async Task<int> UpdateUser(string userName, string password,string userType)
-        {
-            var result = 0;
-            if (_context == null)
-            {
-                return result;
-            }        
-                var data = await _context.Users.FirstAsync(x => x.Username == userName);
-            if (data == null)
-            {
-                throw new InvalidOperationException();
-            }
-
+         public async Task UpdateUser(string userName, string password,string userType)
+        {  
+            var data = await _context.Users.FirstAsync(x => x.Username == userName);
+            if (data == null) throw new AppException(404,"User Not found");
+            //TBD:Update the username
             data.Password = password;
             _context.Users.Update(data);
-             result = await _context.SaveChangesAsync();
-            return result;
+             await _context.SaveChangesAsync();
+           
         }            
     }         
 }

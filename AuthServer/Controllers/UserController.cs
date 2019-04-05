@@ -11,6 +11,7 @@ using User = AuthServer.Models.User;
 
 namespace AuthServer.Controllers
 {
+    //TBD: the default route should be ending with users not user
     [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
@@ -36,37 +37,23 @@ namespace AuthServer.Controllers
 
         [HttpDelete]
         //TBD : userName should not be from header. this should be from path or query string //check the standard
+        //TBD: delete should be based on userid
         public async Task<IActionResult> DeleteUser([FromHeader]string username)
-        {  
+        {
             await _userRepository.DeleteUser(username);
             return Ok();
         }
 
         [HttpPut]
-        //username from path
+        //TBD: Update should be part based on user id
+        //TBD: the id should come from path and not header
         public async Task<IActionResult> UpdateUser([FromHeader]string username, [FromBody]User user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+            //TBD: return error based on model error
+            if (!ModelState.IsValid) return BadRequest();
 
-            if (username == null || user.Password.IsNullOrEmpty())
-            {
-
-                return BadRequest();
-            }
-
-            try
-            {
-                var result = await _userRepository.UpdateUser(username, user.Password, user.UserType);
-                return Ok();
-            }
-            catch (InvalidOperationException)
-            {
-                Console.WriteLine("Username does not exist");
-                return NotFound();
-            }
+            await _userRepository.UpdateUser(username, user.Password, user.UserType);
+            return Ok();
 
         }
     }
