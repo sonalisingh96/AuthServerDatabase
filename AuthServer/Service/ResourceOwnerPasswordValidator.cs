@@ -10,7 +10,7 @@ namespace AuthServer.Service
 
         public ResourceOwnerPasswordValidator(UserRepository rep)
         {
-            this._rep = rep;
+           _rep = rep;
         }
 
         public Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
@@ -20,7 +20,7 @@ namespace AuthServer.Service
             if (context.Password != user.Password) return SetInvalidValidationInContext(context);
             if (user.UserType != "AppUser") return SetInvalidValidationInContext(context);
                     
-            context.Result = new GrantValidationResult(context.UserName, "password", null, "local", null);
+            context.Result = new GrantValidationResult(context.UserName, "password",null, "local", null);
             return Task.FromResult(context.Result);
         }
 

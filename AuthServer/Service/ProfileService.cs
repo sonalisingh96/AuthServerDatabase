@@ -2,14 +2,11 @@
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AuthServer.Service;
 
-namespace AuthServer
+namespace AuthServer.Service
 {
     public class ProfileService : IProfileService
     {
@@ -17,7 +14,7 @@ namespace AuthServer
 
         public ProfileService(UserRepository rep)
         {
-            this._repository = rep;
+           _repository = rep;
         }
 
         public Task GetProfileDataAsync(ProfileDataRequestContext context)

@@ -39,22 +39,24 @@ namespace AuthServer.Service
             return data.Id.ToString();
         }
 
-        public async Task DeleteUser(string userName)
+        public async Task DeleteUser(int userId)
         {
-            var data = await _context.Users.FirstOrDefaultAsync(x => x.Username == userName);
+            var data = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (data == null) throw new AppException(404, "the user is not found");
             _context.Users.Remove(data);
-             var result = await _context.SaveChangesAsync();
-             if(result == 0) throw new AppException(404, "the user is not found");
+            await _context.SaveChangesAsync();
+            
         }
 
-         public async Task UpdateUser(string userName, string password,string userType)
+         public async Task UpdateUser(string userName, string password,string userType,int userId)
         {  
-            var data = await _context.Users.FirstAsync(x => x.Username == userName);
+            var data = await _context.Users.FirstAsync(x => x.Id == userId);
             if (data == null) throw new AppException(404,"User Not found");
-            //TBD:Update the username
+            data.Username = userName;
             data.Password = password;
+            data.UserType = userType;
             _context.Users.Update(data);
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
            
         }            
     }         

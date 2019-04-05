@@ -7,12 +7,9 @@ namespace AuthServer.Database
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [Key]//TBD: Is this supposed to be unique constraint
+        [Key]
         public string Username { get; set; }
-
         public string Password { get; set; }
-
         //TBD: Check the value allowed values(app-user, web-user)
         public string UserType { get; set; }
     }
