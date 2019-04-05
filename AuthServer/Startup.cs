@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AuthServer.Database;
+using AuthServer.ErrorHandling;
 using AuthServer.Service;
 using IdentityServer4;
 using IdentityServer4.Services;
@@ -41,6 +42,7 @@ namespace AuthServer
 
             services.AddIdentityServer()
                 .AddSigningCredential(new X509Certificate2("C:\\workspace\\IdentityServer4Auth.pfx", "ABC$1234"))
+                //.AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
@@ -78,12 +80,12 @@ namespace AuthServer
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            app.UseErrorHandling();
 
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();

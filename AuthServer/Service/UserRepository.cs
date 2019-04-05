@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AuthServer.Database;
+using AuthServer.ErrorHandling;
 using IdentityServer4.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ namespace AuthServer.Service
             var data = _context.Users.FirstOrDefault(p => p.Username ==userName);
             if (data != null)
             {
-                throw new InvalidOperationException();
+                throw new AppException(400, "The user already exists");
             }
             data = new DbUser
             {

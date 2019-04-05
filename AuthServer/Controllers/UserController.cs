@@ -24,25 +24,10 @@ namespace AuthServer.Controllers
         [HttpPost]
         public IActionResult RegisterUser([FromBody]User user)
         {
-
-            try
-            {
-                var userId = _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
-                return Ok(userId);
-            }
-
-            catch (InvalidOperationException)
-            {
-                Console.WriteLine("Username already exists");
-                return BadRequest();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Parameters are not valid ,Provide both username and password: {e.Message}");
-                return BadRequest();
-            }
-
-
+        
+            var userId = _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
+            return Ok(userId);
+        
         }
 
         [HttpDelete]
