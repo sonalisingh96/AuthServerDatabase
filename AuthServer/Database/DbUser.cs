@@ -9,8 +9,10 @@ namespace AuthServer.Database
         public int Id { get; set; }
         [Key]
         public string Username { get; set; }
+        [Required]
         public string Password { get; set; }
-        //TBD: Check the value allowed values(app-user, web-user)
+        [Required]
         public string UserType { get; set; }
+       
     }
 }
