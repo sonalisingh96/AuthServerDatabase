@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "752f8440-25d3-4185-95dc-196859da5509",
+		"name": "Identity Server -> AppUser",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddAppUser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cff25acb-7d26-4191-b36a-b6e5f97f0851",
+						"exec": [
+							"postman.setEnvironmentVariable(\"appuser-username\",\"app_user1\");",
+							"postman.setEnvironmentVariable(\"appuser-password\",\"password1234\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9f56cde4-4191-4fab-87aa-36c82821b48d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\":\"{{appuser-username}}\",\n\t\"Password\":\"{{appuser-password}}\",\n\t\"UserType\":\"AppUser\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTokenForAppUserUsingPasswordCredentialGrant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "810da5e5-8e50-4a74-b4be-0f86d2618969",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"postman.setEnvironmentVariable(\"token\",jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{appuser-username}}",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "api offline_access ",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "resourceOwner",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "secret",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{appuser-password}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessingWithRightToken",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/Values/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Values",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessingWithWrongToken",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}ee",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/Values/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Values",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UnderstandingTheToken",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/Values/understand-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Values",
+						"understand-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OpenId configuration",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/.well-known/openid-configuration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Database",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6a831045-4442-4c57-8e2a-8ac550a17846",
+						"exec": [
+							"postman.setEnvironmentVariable(\"appuser-username\",\"app_user\");",
+							"postman.setEnvironmentVariable(\"appuser-password\",\"11pppassword\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"Username\":\"{{appuser-username}}\",\n\"Password\":\"{{appuser-password}}\",\n\"UserType\":\"AppUser\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/users/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAppUser",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/users/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
