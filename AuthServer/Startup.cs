@@ -2,7 +2,6 @@
 using AuthServer.Database;
 using AuthServer.ErrorHandling;
 using AuthServer.Service;
-using IdentityServer4;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace AuthServer
@@ -27,8 +25,6 @@ namespace AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            //services.AddDbContext<ApplicationDbContext>(opts =>
-            //        opts.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=IdentityServerDatabase;Trusted_Connection=True"));
             services.AddDbContext<ApplicationDbContext>(opts => opts.UseInMemoryDatabase("test"));
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddTransient<IProfileService, ProfileService>();
@@ -40,36 +36,11 @@ namespace AuthServer
             });
 
             services.AddIdentityServer()
-                //TBD: how to create a file
                 .AddSigningCredential(new X509Certificate2("IdentityServer4Auth.pfx", "ABC$1234"))
-                //.AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>();
-            services.AddAuthentication()
-                .AddGoogle("Google", options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                    options.ClientId = "<insert here>";
-                    options.ClientSecret = "<insert here>";
-                })
-                .AddOpenIdConnect("oidc", "OpenID Connect", options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                    options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-                    options.SaveTokens = true;
-
-                    options.Authority = "https://demo.identityserver.io/";
-                    options.ClientId = "implicit";
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = "name",
-                        RoleClaimType = "role"
-                    };
-                });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)
@@ -81,12 +52,6 @@ namespace AuthServer
             });
 
             app.UseErrorHandling();
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
             app.UseStaticFiles();

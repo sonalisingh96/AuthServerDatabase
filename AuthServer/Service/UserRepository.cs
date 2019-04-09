@@ -63,7 +63,7 @@ namespace AuthServer.Service
                 //data.UserType = userType;
             }
             _context.Users.Update(data);
-           await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
              
 
 

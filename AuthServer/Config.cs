@@ -25,8 +25,6 @@ namespace AuthServer
                     ApiSecrets = { new Secret("apisecret".Sha256())}
 
                 }
-
-
             };
         }
 
