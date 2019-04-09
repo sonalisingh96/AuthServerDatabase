@@ -5,9 +5,10 @@ namespace AuthServer.Database
 {
     public class DbUser
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Key]
+        [Required]
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }

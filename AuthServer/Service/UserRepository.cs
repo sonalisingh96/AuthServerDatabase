@@ -58,7 +58,7 @@ namespace AuthServer.Service
             var data = await _context.Users.FirstAsync(x => x.Id == userId);
             if (data == null) throw new AppException(404,"User Not found");
             {
-                //data.Username = userName;
+                data.Username = userName;
                 data.Password = password;
                 //data.UserType = userType;
             }
