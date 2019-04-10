@@ -10,10 +10,10 @@ namespace AuthServer.Models
         public string Username { get; set; }
 
         [Required] 
-        [RegularExpression(@"^([A-Za-z0-9]{6,15})$", ErrorMessage = "Invalid Password,6-15 alphanumeric characters start with any alphnumeric no special characters allowed")]
+        [RegularExpression(@"^([A-Za-z0-9]{6,15})$", ErrorMessage = "Invalid Password,6-15 alphanumeric characters start with any alphanumeric no special characters allowed")]
         public string Password { get; set; }
 
-        [Required]
+        [Required]//Validation that this is appuser or webuser has to be added
         public string UserType { get; set; }
     }
 }

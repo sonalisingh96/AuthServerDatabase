@@ -23,12 +23,14 @@ namespace AuthServer.Service
 
         public async Task<string> RegisterUser(string userName,string password,string userType)
         {
+            //This validation has to be done in the model object
             if (userType != "AppUser" && userType !="WebUser")
                 throw new AppException(400, "Usertype can only be App User or Web User");
+
                 var data = _context.Users.FirstOrDefault(p => p.Username == userName);
                 if (data != null)
                 {
-                    throw new AppException(400, "The user already exists");
+                    throw new AppException(400, "The username is unavailable");
                 }
 
                 data = new DbUser
@@ -60,13 +62,11 @@ namespace AuthServer.Service
             {
                 data.Username = userName;
                 data.Password = password;
+                //We should be able to update the user Type
                 //data.UserType = userType;
             }
             _context.Users.Update(data);
              await _context.SaveChangesAsync();
-             
-
-
          }            
     }         
 }

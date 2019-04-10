@@ -8,7 +8,7 @@ namespace AuthServer.Database
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required]//There is another attribute to make sure the Username is unique. It's called a unique constraint, please use that
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }

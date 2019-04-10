@@ -19,6 +19,7 @@ namespace AuthServer.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody]User user)
         {
+            //Use the error message from the model state
             if (!ModelState.IsValid) throw new AppException(400, "Give Valid Details");
             var userId = await _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
             return Ok(userId);
@@ -34,6 +35,7 @@ namespace AuthServer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute]int id, [FromBody]User user)
         {
+            //Use the error message from the model state
             if (!ModelState.IsValid) throw new AppException(400, "Give Valid Details");
             await _userRepository.UpdateUser(user.Username, user.Password, user.UserType,id);
             return Ok();
