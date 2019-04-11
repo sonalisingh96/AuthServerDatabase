@@ -13,7 +13,7 @@
 					"script": {
 						"id": "cff25acb-7d26-4191-b36a-b6e5f97f0851",
 						"exec": [
-							"postman.setEnvironmentVariable(\"appuser-username\",\"app_user1\");",
+							"postman.setEnvironmentVariable(\"appuser-username\",\"app_user\");",
 							"postman.setEnvironmentVariable(\"appuser-password\",\"password1234\");"
 						],
 						"type": "text/javascript"
@@ -43,7 +43,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Username\":\"{{appuser-username}}\",\n\t\"Password\":\"{{appuser-password}}\",\n\t\"UserType\":\"AppUser\"\n}"
+					"raw": "{\n\t\"Username\":\"{{appuser-username}}\",\n\t\"Password\":\"{{appuser-password}}\",\n\t\"UserType\":\"AppUser\"\n\n}"
 				},
 				"url": {
 					"raw": "http://localhost:5000/api/users",
@@ -271,7 +271,7 @@
 						"id": "6a831045-4442-4c57-8e2a-8ac550a17846",
 						"exec": [
 							"postman.setEnvironmentVariable(\"appuser-username\",\"app_user\");",
-							"postman.setEnvironmentVariable(\"appuser-password\",\"11pppassword\");"
+							"postman.setEnvironmentVariable(\"appuser-password\",\"ppassword\");"
 						],
 						"type": "text/javascript"
 					}
@@ -291,7 +291,7 @@
 					"raw": "{\n\"Username\":\"{{appuser-username}}\",\n\"Password\":\"{{appuser-password}}\",\n\"UserType\":\"AppUser\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/users/0",
+					"raw": "http://localhost:5000/api/users/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -300,7 +300,7 @@
 					"path": [
 						"api",
 						"users",
-						"0"
+						"1"
 					]
 				}
 			},
@@ -322,7 +322,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/users/0",
+					"raw": "http://localhost:5000/api/users/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -331,7 +331,7 @@
 					"path": [
 						"api",
 						"users",
-						"0"
+						"1"
 					]
 				}
 			},
