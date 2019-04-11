@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using AuthServer.ErrorHandling;
 using AuthServer.Service;
 using User = AuthServer.Models.User;
 
@@ -19,7 +18,7 @@ namespace AuthServer.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody]User user)
         {
-            if (!ModelState.IsValid) throw new AppException(400, "Give Valid Details");
+            if (!ModelState.IsValid) { }
             var userId = await _userRepository.RegisterUser(user.Username, user.Password, user.UserType);
             return Ok(userId);
         }
@@ -34,7 +33,7 @@ namespace AuthServer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute]int id, [FromBody]User user)
         {
-            if (!ModelState.IsValid) throw new AppException(400, "Give Valid Details");
+            if (!ModelState.IsValid) { }
             await _userRepository.UpdateUser(user.Username, user.Password, user.UserType,id);
             return Ok();
 

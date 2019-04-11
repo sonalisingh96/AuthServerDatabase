@@ -8,5 +8,11 @@ namespace AuthServer.Database
         {
         }
         public DbSet<DbUser> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<DbUser>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+        }
     }
 }

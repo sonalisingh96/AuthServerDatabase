@@ -60,7 +60,7 @@ namespace AuthServer.Service
             {
                 data.Username = userName;
                 data.Password = password;
-                //data.UserType = userType;
+                data.UserType = userType;
             }
             _context.Users.Update(data);
              await _context.SaveChangesAsync();
